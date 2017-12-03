@@ -214,6 +214,10 @@ version(Python_2_5_Or_Later) {
 }
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_Exception");
+version(Python_3_5_Or_Later) {
+    /// _
+    mixin(PyAPI_DATA!"PyObject* PyExc_StopAsyncIteration");
+}
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_StopIteration");
 version(Python_2_5_Or_Later) {
@@ -246,6 +250,11 @@ mixin(PyAPI_DATA!"PyObject* PyExc_IOError");
 mixin(PyAPI_DATA!"PyObject* PyExc_OSError");
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_ImportError");
+
+version(Python_3_6_Or_Later) {
+    /// _
+    mixin(PyAPI_DATA!"PyObject* PyExc_ModuleNotFoundError");
+}
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_IndexError");
 /// _
@@ -260,6 +269,10 @@ mixin(PyAPI_DATA!"PyObject* PyExc_NameError");
 mixin(PyAPI_DATA!"PyObject* PyExc_OverflowError");
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_RuntimeError");
+version(Python_3_5_Or_Later) {
+    /// _
+    mixin(PyAPI_DATA!"PyObject* PyExc_RecursionError;");
+}
 /// _
 mixin(PyAPI_DATA!"PyObject* PyExc_NotImplementedError");
 /// _
@@ -398,6 +411,14 @@ version (Windows) {
     PyObject* PyErr_SetExcFromWindowsErrWithUnicodeFilename(PyObject*, int, Py_UNICODE*);
     /// Availability: Windows only
     PyObject* PyErr_SetExcFromWindowsErr(PyObject*, int);
+}
+
+version(Python_3_6_Or_Later) {
+    PyObject* PyErr_SetImportErrorSubclass(PyObject*, PyObject*, PyObject*, PyObject*);
+}
+
+version(Python_3_5_Or_Later) {
+    PyObject* PyErr_SetImportError(PyObject*, PyObject*, PyObject*);
 }
 
 // PyErr_BadInternalCall and friends purposely omitted.

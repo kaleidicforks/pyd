@@ -28,6 +28,12 @@ struct PyCodeObject {
     int co_stacksize;
     /** CO_..., see below */
     int co_flags;
+
+    version(Python_3_6_Or_Later) {
+        /** first source line number */
+        int co_firstlineno;
+    }
+
     /** instruction opcodes */
     PyObject* co_code;
     /** list (constants used) */
@@ -45,8 +51,11 @@ struct PyCodeObject {
     PyObject* co_filename;
     /** string (name, for reference) */
     PyObject* co_name;
-    /** first source line number */
-    int co_firstlineno;
+    version(Python_3_6_Or_Later) {
+    }else{
+        /** first source line number */
+        int co_firstlineno;
+    }
     /** string (encoding addr<->lineno mapping) See
        Objects/lnotab_notes.txt for details. */
     PyObject* co_lnotab;
@@ -59,6 +68,12 @@ struct PyCodeObject {
         /** to support weakrefs to code objects */
         /// Availability: >= 2.7
         PyObject* co_weakreflist;
+    }
+    version(Python_3_6_Or_Later) {
+        /** Scratch space for extra data relating to the code object.
+          Type is a void* to keep the format private in codeobject.c to force
+          people to go through the proper APIs */
+        void* co_extra;
     }
 }
 
@@ -76,6 +91,13 @@ enum int CO_NESTED      = 0x0010;
 enum int CO_GENERATOR   = 0x0020;
 /// ditto
 enum int CO_NOFREE      = 0x0040;
+version(Python_3_5_Or_Later) {
+    /** The CO_COROUTINE flag is set for coroutine functions (defined with
+       ``async def`` keywords) */
+    enum int CO_COROUTINE   = 0x0080;
+    /// _
+    enum int CO_ITERABLE_COROUTINE      = 0x0100;
+}
 
 version(Python_2_5_Or_Later){
     // Removed in 2.5
@@ -99,6 +121,10 @@ version(Python_2_5_Or_Later){
 version(Python_3_2_Or_Later) {
     /// Availability: 3.2
     enum CO_FUTURE_BARRY_AS_BDFL =  0x40000;
+}
+version(Python_3_5_Or_Later) {
+    /// Availability: 3.5
+    enum CO_FUTURE_GENERATOR_STOP =  0x80000;
 }
 
 /** Max static block nesting within a function */

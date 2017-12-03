@@ -103,6 +103,8 @@ enum int METH_STATIC  = 0x0020;
    slot like sq_contains. */
 enum int METH_COEXIST = 0x0040;
 
+enum int METH_FASTCALL = 0x0080;
+
 version(Python_3_0_Or_Later) {
 }else{
     /// Availability: 2.*
@@ -127,6 +129,9 @@ struct PyCFunctionObject {
     PyObject*    m_self;
     /** The __module__ attribute, can be anything */
     PyObject*    m_module;
+    version(Python_3_5_Or_Later) {
+        PyObject* m_weakreflist;
+    }
 }
 
 version(Python_2_6_Or_Later) {
